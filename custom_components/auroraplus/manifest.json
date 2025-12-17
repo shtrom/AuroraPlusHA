@@ -6,7 +6,7 @@
   "dependencies": [],
   "codeowners": ["@LeighCurran","@shtrom"],
   "requirements": [
-      "auroraplus@git+https://github.com/shtrom/AuroraPlus@38123b24b9a07f525eadb2bcda33cf178856d0b0",
+      "auroraplus@git+https://github.com/shtrom/AuroraPlus@01618c8448dbf93e69771dc2806b64877ab92fda",
       "homeassistant-historical-sensor@git+https://github.com/shtrom/ha-historical-sensor@2025.11-async_import_statistics-mean_type"
   ],
   "loggers": [ "auroraplus" ],
