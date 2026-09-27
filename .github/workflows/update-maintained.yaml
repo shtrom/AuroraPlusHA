@@ -38,4 +38,9 @@ jobs:
           git add README.md
           git commit -m "update maintenance badge for ${YEAR}"
           git push --force origin HEAD
+          PR_NUMBER="$(gh pr list --head "${REFRESH_BRANCH}" --state open \
+            --json number --jq '.[].number')"
+          if [ -n "${PR_NUMBER}" ]; then
+            gh pr close "${PR_NUMBER}"
+          fi
           gh pr create --fill
