@@ -27,7 +27,7 @@ jobs:
             exit 0
           fi
           YEAR="$(date +%Y)"
-          sed -i "/Maintenance/s/[0-9]\{3,4\}.svg/${YEAR}.svg/p" README.md
+          sed -i "/Maintenance/s/[0-9]\{3,4\}.svg/${YEAR}.svg/" README.md
           if ! git status --porcelain | grep -q README.md; then
             echo "Badge already correct" >&2
             exit 0
