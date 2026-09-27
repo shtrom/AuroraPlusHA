@@ -37,5 +37,5 @@ jobs:
           git checkout -b update-maintenance-${YEAR}
           git add README.md
           git commit -m "update maintenance badge for ${YEAR}"
-          git push origin HEAD
+          git push --force origin HEAD
           gh pr create --fill
