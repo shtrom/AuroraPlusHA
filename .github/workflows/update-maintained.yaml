@@ -25,11 +25,13 @@ jobs:
             exit 0
           fi
           YEAR="$(date +%Y-m)"
-          sed -n "/Maintenance/s/[0-9]\{3,4\}.svg/${YEAR}.svg/p" README.md
+          sed -ni "/Maintenance/s/[0-9]\{3,4\}.svg/${YEAR}.svg/p" README.md
           if ! git status --porcelain | grep -q README.md; then
             echo "Badge already correct" >&2
             exit 0
           fi
+          git config user.name "maintenance-update-bot"
+          git config user.email "shtrom@users.noreply.github.com"
           git checkout -b update-maintenance-${YEAR}
           git add README.md
           git commit -m 'update maintenance badge for ${YEAR}'
