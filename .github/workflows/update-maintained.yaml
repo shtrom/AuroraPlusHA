@@ -14,10 +14,12 @@ env:
 
 jobs:
   update-badge:
+    name: Update maintenance badge
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
-      - name: Update maintenance badge
+      - env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           COMMITS=$(git log --since=$(date +%Y-%m-%d -d "-${LOOKBACK}") --oneline)
           if [ -z "${COMMITS}" ]; then
