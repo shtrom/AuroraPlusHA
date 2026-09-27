@@ -26,7 +26,7 @@ jobs:
             echo "No recent changes" >&2
             exit 0
           fi
-          YEAR="$(date +%Y-m)"
+          YEAR="$(date +%Y)"
           sed -ni "/Maintenance/s/[0-9]\{3,4\}.svg/${YEAR}.svg/p" README.md
           if ! git status --porcelain | grep -q README.md; then
             echo "Badge already correct" >&2
@@ -36,6 +36,6 @@ jobs:
           git config user.email "shtrom@users.noreply.github.com"
           git checkout -b update-maintenance-${YEAR}
           git add README.md
-          git commit -m 'update maintenance badge for ${YEAR}'
+          git commit -m "update maintenance badge for ${YEAR}"
           git push origin HEAD
           gh pr create
