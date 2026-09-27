@@ -38,4 +38,4 @@ jobs:
           git add README.md
           git commit -m "update maintenance badge for ${YEAR}"
           git push origin HEAD
-          gh pr create
+          gh pr create --fill
