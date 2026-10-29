@@ -229,6 +229,16 @@ class AuroraHistoricalSensor(HistoricalSensor, AuroraSensor):
         self._unit_class = self._get_unit_class()
         self._attr_historical_states = []
 
+    def _get_unit_class(self) -> str:
+        """Return the unit of measurement."""
+        if self.device_class == SensorDeviceClass.MONETARY:
+            return UNIT_CLASS_MONETARY
+        elif self.device_class == SensorDeviceClass.ENERGY:
+            return UNIT_CLASS_ENERGY
+        raise IntegrationError(
+            f"Device class {self.device_class} for {self._sensor} is not handled by {self.__class__} (unit class)"
+        )
+
     @override
     @property
     def device_info(self) -> DeviceInfo:
@@ -266,6 +276,17 @@ class AuroraHistoricalSensor(HistoricalSensor, AuroraSensor):
             f"{self._sensor}: historical states: %s", self._attr_historical_states
         )
 
+    def _get_state_field_and_tariff(self) -> tuple[str, str]:
+        if self.device_class == SensorDeviceClass.MONETARY:
+            tariff = self._sensor.removeprefix(SENSOR_DOLLARVALUEUSAGETARIFF).strip()
+            field = "DollarValueUsage"
+            return field, tariff
+        if self._sensor.startswith(SENSOR_KILOWATTHOURUSAGETARIFF):
+            tariff = self._sensor.removeprefix(SENSOR_KILOWATTHOURUSAGETARIFF).strip()
+            field = "KilowattHourUsage"
+            return field, tariff
+        raise IntegrationError(f"Sensor {self._sensor} doesn't have field and tariffs")
+
     def get_statistic_metadata(self) -> StatisticMetaData:
         meta = super().get_statistic_metadata()
         meta["has_sum"] = True
@@ -273,16 +294,6 @@ class AuroraHistoricalSensor(HistoricalSensor, AuroraSensor):
         meta["unit_of_measurement"] = self.unit_of_measurement
 
         return meta
-
-    def _get_unit_class(self) -> str:
-        """Return the unit of measurement."""
-        if self.device_class == SensorDeviceClass.MONETARY:
-            return UNIT_CLASS_MONETARY
-        elif self.device_class == SensorDeviceClass.ENERGY:
-            return UNIT_CLASS_ENERGY
-        raise IntegrationError(
-            f"Device class {self.device_class} for {self._sensor} is not handled by {self.__class__} (unit class)"
-        )
 
     async def async_calculate_statistic_data(
         self,
@@ -318,17 +329,6 @@ class AuroraHistoricalSensor(HistoricalSensor, AuroraSensor):
     def unit_class(self) -> str:
         """Return the unit of measurement."""
         return self._unit_class
-
-    def _get_state_field_and_tariff(self) -> tuple[str, str]:
-        if self.device_class == SensorDeviceClass.MONETARY:
-            tariff = self._sensor.removeprefix(SENSOR_DOLLARVALUEUSAGETARIFF).strip()
-            field = "DollarValueUsage"
-            return field, tariff
-        if self._sensor.startswith(SENSOR_KILOWATTHOURUSAGETARIFF):
-            tariff = self._sensor.removeprefix(SENSOR_KILOWATTHOURUSAGETARIFF).strip()
-            field = "KilowattHourUsage"
-            return field, tariff
-        raise IntegrationError(f"Sensor {self._sensor} doesn't have field and tariffs")
 
 
 class AuroraTimeOfUseSensor(AuroraSensor):
