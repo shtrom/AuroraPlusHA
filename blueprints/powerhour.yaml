@@ -45,6 +45,7 @@ actions:
       data:
         title: New Power Hour offer
         message: Go accept it at https://my.auroraenergy.com.au/.
+        notification_id: auroraplus_powerhour
   - conditions:
     - condition: trigger
       id:
@@ -56,6 +57,7 @@ actions:
         title: Power Hour “{{ trigger.from_state.attributes.next_event|default("unknown") }}” starting
         message: Ends in {{ time_until(trigger.from_state.attributes.next_event_date|default(0)) }}
           ({{ as_local(trigger.from_state.attributes.next_event_date|default(0)) }}).
+        notification_id: auroraplus_powerhour
   - conditions:
     - condition: trigger
       id:
@@ -65,4 +67,5 @@ actions:
       metadata: {}
       data:
         title: Power Hour “{{ trigger.from_state.attributes.next_event|default("unknown") }}” ended
+        notification_id: auroraplus_powerhour
 mode: single

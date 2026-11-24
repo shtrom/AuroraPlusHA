@@ -39,6 +39,7 @@ actions:
       data:
         title: Off-peak period started
         message: Ends in {{ time_until(trigger.to_state.attributes.end_date|default(0)) }} ({{ as_local(trigger.to_state.attributes.end_date|default(0)) }}).
+        notification_id: auroraplus_tou
   - conditions:
     - condition: trigger
       id:
@@ -49,4 +50,5 @@ actions:
       data:
         title: Peak period started
         message: Ends in {{ time_until(trigger.to_state.attributes.end_date|default(0)) }} ({{ as_local(trigger.to_state.attributes.end_date|default(0)) }}).
+        notification_id: auroraplus_tou
 mode: single
